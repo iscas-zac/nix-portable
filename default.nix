@@ -300,7 +300,11 @@ let
               storePath=\$(storePathOfFile \$real)
               toBind="\$toBind \$storePath \$storePath"
             else
-              toBind="\$toBind \$real \$real"
+              if [[ "\$real" == /etc/resolv.conf]]; then
+                toBind="\$toBind /dnsmasq/resolv.conf /etc/resolv.conf"
+              else
+                toBind="\$toBind \$real \$real"
+              fi
             fi
           fi
         fi
@@ -501,7 +505,7 @@ let
       # else
       # fi
       debug "Testing if nix can build stuff without sandbox"
-      if ! \$run "\$nixBin" build --no-link -f "\$dir/mini-drv.nix" --option sandbox false >&3 2>&3; then
+      if ! \$run "\$nixBin" build --no-link -f "\$dir/mini-drv.nix" --extra-experimental-flags nix-command --option sandbox false >&3 2>&3; then
         echo "Fatal error: nix is unable to build packages"
         exit 1
       fi
