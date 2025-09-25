@@ -300,7 +300,7 @@ let
               storePath=\$(storePathOfFile \$real)
               toBind="\$toBind \$storePath \$storePath"
             else
-              if [[ "\$real" == /etc/resolv.conf]]; then
+              if [[ "\$real" == /etc/resolv.conf ]]; then
                 toBind="\$toBind /home/zhangchi/dnsmasq/resolv.conf /etc/resolv.conf"
               else
                 toBind="\$toBind \$real \$real"
