@@ -290,7 +290,7 @@ let
 
 
       # TODO: add /var/run/dbus/system_bus_socket
-      paths="/etc/host.conf /etc/hosts /etc/hosts.equiv /etc/mtab /etc/netgroup /etc/networks /etc/passwd /etc/group /etc/nsswitch.conf /etc/resolv.conf /etc/localtime \$HOME"
+      paths="/etc/host.conf /etc/hosts /etc/hosts.equiv /etc/mtab /etc/netgroup /etc/networks /etc/passwd /etc/group /etc/nsswitch.conf /etc/localtime \$HOME"
 
       for p in \$paths; do
         if [ -e "\$p" ]; then
@@ -300,15 +300,12 @@ let
               storePath=\$(storePathOfFile \$real)
               toBind="\$toBind \$storePath \$storePath"
             else
-              if [[ "\$real" == /etc/resolv.conf ]]; then
-                toBind="\$toBind /home/zhangchi/dnsmasq/resolv.conf /etc/resolv.conf"
-              else
-                toBind="\$toBind \$real \$real"
-              fi
+              toBind="\$toBind \$real \$real"
             fi
           fi
         fi
       done
+      toBind="\$toBind /home/zhangchi/dnsmasq/resolv.conf /run/resolvconf/resolv.conf"
 
       # if we're on a nixos, the /bin/sh symlink will point
       # to a /nix/store path which doesn't exit inside the wrapped env
